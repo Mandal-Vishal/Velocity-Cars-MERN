@@ -13,7 +13,7 @@ export default function CarPage() {
     const fetchCar = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/cars/${id}`
+          `${import.meta.env.VITE_API_URL}/api/cars/${id}`
         );
 
         setCar(response.data.car);
