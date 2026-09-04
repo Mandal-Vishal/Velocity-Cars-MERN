@@ -34,7 +34,10 @@ function CarsBrowser() {
     const getCars = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cars`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/cars`,
+          { withCredentials: true },
+        );
         setCars(res.data.cars || []);
       } catch (err) {
         console.error("Failed to fetch cars:", err);
@@ -69,7 +72,9 @@ function CarsBrowser() {
     const list = cars.filter((c) => {
       if (
         query &&
-        !`${c.model} ${c.brand || ""}`.toLowerCase().includes(query.toLowerCase())
+        !`${c.model} ${c.brand || ""}`
+          .toLowerCase()
+          .includes(query.toLowerCase())
       ) {
         return false;
       }
@@ -197,7 +202,6 @@ function CarsBrowser() {
         <Sheet>
           <SheetTrigger className="h-11 rounded-xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted lg:hidden">
             <SlidersHorizontal className="mr-2 h-4 w-4 inline" /> Filters{" "}
-            
           </SheetTrigger>
           <SheetContent side="left" className="w-80 overflow-y-auto">
             <SheetTitle className="mb-4">Filters</SheetTitle>

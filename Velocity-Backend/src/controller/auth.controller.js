@@ -42,6 +42,11 @@ const loginUser = async (req, res) => {
     return res.status(401).json({ msg: "Invalid Password" });
   }
   const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET);
+
+  console.log("TOKEN CREATED:", token);
+console.log("FRONTEND URL:", process.env.FRONTEND_URL);
+
+
   res.cookie("token", token, {
   httpOnly: true,
   secure: true,
