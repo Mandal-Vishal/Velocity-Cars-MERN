@@ -33,10 +33,7 @@ function DashboardContent({ user, onAddCar }) {
     "Completed",
   ];
 
-  // ====================================================
   // FETCH OWNER CARS
-  // ====================================================
-
   const fetchCars = async () => {
     try {
       setLoadingCars(true);
@@ -57,10 +54,7 @@ function DashboardContent({ user, onAddCar }) {
     }
   };
 
-  // ====================================================
   // FETCH OWNER BOOKINGS
-  // ====================================================
-
   const fetchBookings = async () => {
     try {
       setLoadingBookings(true);
@@ -74,11 +68,7 @@ function DashboardContent({ user, onAddCar }) {
 
       setBookings(response.data.bookings || []);
     } catch (error) {
-      console.error(
-        "Failed to fetch owner bookings:",
-        error
-      );
-
+      console.error("Failed to fetch owner bookings:", error);
       setBookings([]);
     } finally {
       setLoadingBookings(false);
@@ -90,10 +80,7 @@ function DashboardContent({ user, onAddCar }) {
     fetchBookings();
   }, []);
 
-  // ====================================================
   // CAR STATISTICS
-  // ====================================================
-
   const availableCars = useMemo(() => {
     return cars.filter((car) => car.available).length;
   }, [cars]);
@@ -113,26 +100,18 @@ function DashboardContent({ user, onAddCar }) {
       const pickup = new Date(booking.pickupDate);
       const returnDate = new Date(booking.returnDate);
 
-      if (
-        today >= pickup &&
-        today <= returnDate
-      ) {
-        activeCarIds.add(
-          booking.car._id.toString()
-        );
+      if (today >= pickup && today <= returnDate) {
+        activeCarIds.add(booking.car._id.toString());
       }
     });
 
     return activeCarIds.size;
   }, [bookings]);
 
-  // Your current Car model doesn't have a maintenance field.
+  // Car model doesn't have a maintenance field.
   const maintenanceCars = 0;
 
-  // ====================================================
   // BOOKING STATISTICS
-  // ====================================================
-
   const activeBookings = useMemo(() => {
     return bookings.filter(
       (booking) => booking.status === "Confirmed"
@@ -145,10 +124,8 @@ function DashboardContent({ user, onAddCar }) {
     ).length;
   }, [bookings]);
 
-  // ====================================================
   // MONTHLY EARNINGS
-  // ====================================================
-
+  // Uses booking.subtotal
   const monthlyEarnings = useMemo(() => {
     const now = new Date();
 
@@ -159,8 +136,7 @@ function DashboardContent({ user, onAddCar }) {
         }
 
         const bookingDate = new Date(
-          booking.updatedAt ||
-            booking.createdAt
+          booking.updatedAt || booking.createdAt
         );
 
         return (
@@ -170,15 +146,12 @@ function DashboardContent({ user, onAddCar }) {
       })
       .reduce(
         (total, booking) =>
-          total + Number(booking.total || 0),
+          total + Number(booking.subtotal || 0),
         0
       );
   }, [bookings]);
 
-  // ====================================================
   // STATUS STYLE
-  // ====================================================
-
   const getStatusStyle = (status) => {
     switch (status) {
       case "Confirmed":
@@ -201,10 +174,7 @@ function DashboardContent({ user, onAddCar }) {
     }
   };
 
-  // ====================================================
   // FILTER BOOKINGS
-  // ====================================================
-
   const filteredBookings = useMemo(() => {
     const searchValue = search.trim().toLowerCase();
 
@@ -235,10 +205,7 @@ function DashboardContent({ user, onAddCar }) {
     });
   }, [bookings, search, activeTab]);
 
-  // ====================================================
   // RECENT BOOKINGS
-  // ====================================================
-
   const recentBookings = useMemo(() => {
     return [...filteredBookings]
       .sort(
@@ -249,10 +216,8 @@ function DashboardContent({ user, onAddCar }) {
       .slice(0, 5);
   }, [filteredBookings]);
 
-  // ====================================================
   // MONTHLY CHART
-  // ====================================================
-
+  // Uses booking.subtotal instead of booking.total
   const monthlyChart = useMemo(() => {
     const now = new Date();
     const values = [];
@@ -274,8 +239,7 @@ function DashboardContent({ user, onAddCar }) {
           }
 
           const bookingDate = new Date(
-            booking.updatedAt ||
-              booking.createdAt
+            booking.updatedAt || booking.createdAt
           );
 
           return (
@@ -285,7 +249,7 @@ function DashboardContent({ user, onAddCar }) {
         })
         .reduce(
           (total, booking) =>
-            total + Number(booking.total || 0),
+            total + Number(booking.subtotal || 0),
           0
         );
 
@@ -316,10 +280,7 @@ function DashboardContent({ user, onAddCar }) {
 
   return (
     <>
-      {/* ================================================= */}
       {/* HEADER */}
-      {/* ================================================= */}
-
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <p className="mb-2 text-sm font-medium text-blue-600">
@@ -345,10 +306,7 @@ function DashboardContent({ user, onAddCar }) {
         </button>
       </div>
 
-      {/* ================================================= */}
       {/* STAT CARDS */}
-      {/* ================================================= */}
-
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Total Cars"
@@ -405,10 +363,7 @@ function DashboardContent({ user, onAddCar }) {
         />
       </div>
 
-      {/* ================================================= */}
       {/* EARNINGS + AVAILABILITY */}
-      {/* ================================================= */}
-
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.6fr_1fr]">
         {/* EARNINGS */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
@@ -510,10 +465,7 @@ function DashboardContent({ user, onAddCar }) {
         </div>
       </div>
 
-      {/* ================================================= */}
       {/* RECENT BOOKINGS */}
-      {/* ================================================= */}
-
       <div className="mt-6">
         {loadingBookings ? (
           <div className="flex items-center justify-center rounded-2xl border border-slate-200 bg-white p-12 shadow-sm">
@@ -536,10 +488,7 @@ function DashboardContent({ user, onAddCar }) {
         )}
       </div>
 
-      {/* ================================================= */}
       {/* QUICK ACTIONS */}
-      {/* ================================================= */}
-
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <QuickAction
           icon={Plus}
@@ -563,10 +512,6 @@ function DashboardContent({ user, onAddCar }) {
     </>
   );
 }
-
-// ====================================================
-// AVAILABILITY ROW
-// ====================================================
 
 function AvailabilityRow({
   label,
