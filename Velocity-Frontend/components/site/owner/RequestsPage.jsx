@@ -36,7 +36,7 @@ function RequestsPage() {
   const updateBooking = async (bookingId, status) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/bookings/${bookingId}/status`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}/status`,
         {
           status,
         },
