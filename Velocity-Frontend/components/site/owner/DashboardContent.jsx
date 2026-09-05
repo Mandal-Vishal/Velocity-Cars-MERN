@@ -66,7 +66,7 @@ function DashboardContent({ user, onAddCar }) {
       setLoadingBookings(true);
 
       const response = await axios.get(
-        "http://localhost:8000/api/bookings/owner",
+        `${import.meta.env.VITE_API_URL}/api/bookings/owner`,
         {
           withCredentials: true,
         }
