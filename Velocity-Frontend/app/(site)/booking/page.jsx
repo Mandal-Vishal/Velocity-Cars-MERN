@@ -21,7 +21,7 @@ export default function BookingPage() {
 
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/cars/${carId}`
+          `${import.meta.env.VITE_API_URL}/api/cars/${carId}`
         );
 
         setCar(response.data.car);
