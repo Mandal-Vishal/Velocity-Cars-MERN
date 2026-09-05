@@ -23,7 +23,7 @@ function EarningsPage() {
       setError("");
 
       const response = await axios.get(
-        "https://velocity-server-vert.vercel.app/api/booking/owner",
+        `${import.meta.env.VITE_API_URL}/api/bookings/owner`,
         {
           withCredentials: true,
         }
