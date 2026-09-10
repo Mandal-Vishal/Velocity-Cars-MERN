@@ -506,7 +506,7 @@ function OwnerDashboard() {
 
           {activeMenu === "Bookings" && (
             <BookingsPage
-              bookings={filteredBookings}
+              // bookings={filteredBookings}
               search={search}
               setSearch={setSearch}
               activeTab={activeTab}
