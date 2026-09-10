@@ -184,4 +184,70 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
-module.exports = { loginUser, registerUser, getCurrentUser, logout , forgotPassword };
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({
+        msg: "Email, OTP and new password are required",
+      });
+    }
+
+    // Find the user
+    const user = await userModel.findOne({
+      email: email.toLowerCase().trim(),
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "User not found",
+      });
+    }
+
+    // Check OTP
+    if (user.resetOtp !== otp) {
+      return res.status(400).json({
+        msg: "Invalid OTP",
+      });
+    }
+
+    // Check OTP expiry
+    if (!user.resetOtpExpires || user.resetOtpExpires < new Date()) {
+      return res.status(400).json({
+        msg: "OTP has expired",
+      });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    //savw hashed password
+    user.password = hashedPassword;
+
+    // Clear OTP after successful reset
+    user.resetOtp = null;
+    user.resetOtpExpires = null;
+
+    await user.save();
+
+    return res.status(200).json({
+      msg: "Password reset successfully",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+
+    return res.status(500).json({
+      msg: "Something went wrong",
+    });
+  }
+};
+
+module.exports = {
+  loginUser,
+  registerUser,
+  getCurrentUser,
+  logout,
+  forgotPassword,
+  resetPassword,
+};
