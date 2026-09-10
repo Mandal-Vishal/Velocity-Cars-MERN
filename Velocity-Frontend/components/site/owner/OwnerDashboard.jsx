@@ -708,9 +708,9 @@ function OwnerDashboard() {
             <EarningsPage />
           )}
 
-          {activeMenu === "Reviews" && (
+          {/* {activeMenu === "Reviews" && (
             <ReviewsPage />
-          )}
+          )} */}
 
           {activeMenu === "Messages" && (
             <MessagesPage />
