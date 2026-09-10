@@ -21,6 +21,7 @@ import Home from "../components/site/renter/home"
 import OwnerDashboard from "../components/site/owner/OwnerDashboard"
 import { AuthContext } from "./context/AuthContext"
 import { useContext } from "react"
+import ForgotPassword from "../components/site/auth/forget-password"
 
 function CustomerRoute({ children }) {
   return <SiteLayout>{children}</SiteLayout>
@@ -43,6 +44,8 @@ export default function App() {
         <Route element = {<ProtectedRoutes allowedRoles={'owner'}/>}>
           <Route path="/owner/dashboard" element={<CustomerRoute> <OwnerDashboard/></CustomerRoute>}/>
         </Route>
+
+        <Route path="/forgot-password" element={<ForgotPassword />}/>
 
         <Route path="/" element={<CustomerRoute><HomePage /></CustomerRoute>} />
         <Route path="/cars" element={<CustomerRoute><CarsPage /></CustomerRoute>} />

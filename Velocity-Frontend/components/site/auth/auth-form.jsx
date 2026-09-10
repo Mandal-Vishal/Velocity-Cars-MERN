@@ -106,7 +106,7 @@ function AuthForm({ mode , role }) {
           <div className="flex justify-between">
             <Label htmlFor="password">Password</Label>
             {mode === "login" && (
-              <Link to="#" className="text-xs font-medium text-primary">
+              <Link to="/forgot-password" className="text-xs font-medium text-primary">
                 Forgot password?
               </Link>
             )}

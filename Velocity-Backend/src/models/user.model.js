@@ -33,6 +33,15 @@ const userSchema = new mongoose.Schema(
         ref: "car",
       },
     ],
+    resetOtp: {
+      type: String,
+      default: null,
+    },
+
+    resetOtpExpires: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
