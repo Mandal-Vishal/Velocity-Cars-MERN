@@ -133,7 +133,7 @@ function Navbar() {
                     {l.label}
                   </Link>
                 ))}
-                <div className="my-3 h-px bg-border" />
+                {/* <div className="my-3 h-px bg-border" /> */}
                   {!user ? (
                   <div className="flex flex-col gap-3 p-2">
                     <Button asChild variant="outline" className="w-full">
