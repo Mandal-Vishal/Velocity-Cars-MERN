@@ -59,25 +59,8 @@ function Home() {
           </p>
         </div>
 
-        {/* Search Section */}
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Search className="h-5 w-5 text-muted-foreground" />
-
-            <input
-              type="text"
-              placeholder="Search by car name or location..."
-              className="w-full bg-transparent outline-none"
-            />
-          </div>
-        </div>
-
         {/* Quick Actions */}
         <div className="mt-10">
-          <h2 className="text-xl font-semibold">
-            Quick Access
-          </h2>
-
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
 
             <Link
