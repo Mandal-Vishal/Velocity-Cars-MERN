@@ -26,8 +26,6 @@ import MyCars from "./MyCarsPage";
 import BookingsPage from "./BookingsPage";
 import RequestsPage from "./RequestsPage";
 import EarningsPage from "./EarningsPage";
-import ReviewsPage from "./ReviewsPage";
-import MessagesPage from "./MessagesPage";
 import OwnerProfile from "./OwnerProfile";
 import SettingsPage from "./SettingsPage";
 import AddCarModal from "./AddCarModal";
@@ -99,63 +97,6 @@ function OwnerDashboard() {
   };
 
   // --------------------------------------------------
-  // BOOKINGS
-  // --------------------------------------------------
-
-  const [bookings] = useState([
-    {
-      id: "BK001",
-      renter: "Rohit Verma",
-      car: "BMW 3 Series",
-      location: "Mumbai",
-      dates: "28 May - 2 Jun",
-      amount: "₹18,750",
-      status: "Confirmed",
-      initials: "RV",
-    },
-    {
-      id: "BK002",
-      renter: "Neha Singh",
-      car: "Hyundai Creta",
-      location: "Thane",
-      dates: "30 May - 3 Jun",
-      amount: "₹12,000",
-      status: "Ongoing",
-      initials: "NS",
-    },
-    {
-      id: "BK003",
-      renter: "Aman Gupta",
-      car: "Tata Nexon",
-      location: "Andheri",
-      dates: "2 Jun - 6 Jun",
-      amount: "₹11,200",
-      status: "Upcoming",
-      initials: "AG",
-    },
-    {
-      id: "BK004",
-      renter: "Karan Mehta",
-      car: "Honda City",
-      location: "Bandra",
-      dates: "25 May - 27 May",
-      amount: "₹6,000",
-      status: "Completed",
-      initials: "KM",
-    },
-    {
-      id: "BK005",
-      renter: "Vikram Joshi",
-      car: "Maruti Dzire",
-      location: "Powai",
-      dates: "20 May - 22 May",
-      amount: "₹4,800",
-      status: "Cancelled",
-      initials: "VJ",
-    },
-  ]);
-
-  // --------------------------------------------------
   // SIDEBAR MENU
   // --------------------------------------------------
 
@@ -179,15 +120,7 @@ function OwnerDashboard() {
     {
       label: "Earnings",
       icon: Wallet,
-    },
-    {
-      label: "Reviews",
-      icon: Star,
-    },
-    {
-      label: "Messages",
-      icon: MessageSquare,
-    },
+    }
   ];
 
   const bottomMenu = [
@@ -609,8 +542,6 @@ function OwnerDashboard() {
 
             <button className="relative rounded-xl border border-slate-200 bg-white p-2.5 transition hover:bg-slate-50">
 
-              <Bell className="h-5 w-5 text-slate-600" />
-
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
 
             </button>
@@ -706,10 +637,6 @@ function OwnerDashboard() {
 
           {activeMenu === "Earnings" && (
             <EarningsPage />
-          )}
-
-          {activeMenu === "Messages" && (
-            <MessagesPage />
           )}
 
           {activeMenu === "Profile" && (
