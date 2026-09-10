@@ -1,3 +1,12 @@
+const fuelTypes = ["Petrol", "Diesel", "Electric","CNG", "Hybrid"];
+const transmissions = ["Automatic", "Manual"];
+const categories = [
+  { name: "SUV", count: 2, icon: "truck" },
+  { name: "Sedan", count: 3, icon: "car" },
+  { name: "Sports", count: 1, icon: "gauge" },
+  { name: "Electric", count: 1, icon: "zap" },
+  { name: "Luxury", count: 1, icon: "gem" }
+];
 const testimonials = [
   {
     name: "Sarah Johnson",
@@ -45,6 +54,9 @@ const faqs = [
 ];
 
 export {
+  categories,
   faqs,
-  testimonials,
+  fuelTypes,
+ testimonials,
+  transmissions
 };

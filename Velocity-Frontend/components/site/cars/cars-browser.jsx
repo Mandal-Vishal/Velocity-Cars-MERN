@@ -93,7 +93,7 @@ function CarsBrowser() {
       default:
         return list;
     }
-  }, [cars, query, sort, selFuels, selTrans, selSeats, maxPrice]); // FIX: Added `cars` here
+  }, [cars, query, sort, selFuels, selTrans, selSeats, maxPrice]); 
 
   const filters = (
     <div className="space-y-7">
