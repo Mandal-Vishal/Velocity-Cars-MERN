@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Car, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,8 @@ function AuthForm({ mode, role }) {
 
         console.log(response.data);
 
+        toast.success("Account created successfully!");
+
         navigate("/login");
       }
 
@@ -66,6 +69,8 @@ function AuthForm({ mode, role }) {
 
         setUser(user);
 
+        toast.success("Login successful!");
+
         if (user.role === "renter") {
           navigate("/");
         } else {
@@ -73,13 +78,20 @@ function AuthForm({ mode, role }) {
         }
       }
     } catch (error) {
-      console.log(error.response?.data?.message);
+      console.error("Auth error:", error);
+
+      // Get error message from backend
+      const errorMessage =
+        error.response?.data?.msg ||
+        "Something went wrong. Please try again.";
+
+      toast.error(errorMessage);
     }
   };
 
   return (
     <div className="mx-auto max-w-md rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-      
+
       {/* =========================
           HEADER
       ========================= */}
@@ -116,25 +128,33 @@ function AuthForm({ mode, role }) {
 
             {/* First Name */}
             <div className="space-y-2">
-              <Label htmlFor="first">First name</Label>
+              <Label htmlFor="first">
+                First name
+              </Label>
 
               <Input
                 id="first"
                 value={firstName}
                 required
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) =>
+                  setFirstName(e.target.value)
+                }
               />
             </div>
 
             {/* Last Name */}
             <div className="space-y-2">
-              <Label htmlFor="last">Last name</Label>
+              <Label htmlFor="last">
+                Last name
+              </Label>
 
               <Input
                 id="last"
                 required
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) =>
+                  setLastName(e.target.value)
+                }
               />
             </div>
 
@@ -145,7 +165,9 @@ function AuthForm({ mode, role }) {
             EMAIL
         ========================= */}
         <div className="space-y-2">
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">
+            Email address
+          </Label>
 
           <Input
             id="email"
@@ -153,7 +175,9 @@ function AuthForm({ mode, role }) {
             value={email}
             placeholder="you@example.com"
             required
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
         </div>
 
@@ -183,16 +207,24 @@ function AuthForm({ mode, role }) {
 
             <Input
               id="password"
-              type={showPassword ? "text" : "password"}
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
               className="pr-10"
             />
 
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               aria-label={
                 showPassword
@@ -253,7 +285,11 @@ function AuthForm({ mode, role }) {
           : "Already have an account? "}
 
         <Link
-          to={mode === "login" ? "/register" : "/login"}
+          to={
+            mode === "login"
+              ? "/register"
+              : "/login"
+          }
           className="font-semibold text-primary"
         >
           {mode === "login"
@@ -261,6 +297,7 @@ function AuthForm({ mode, role }) {
             : "Sign in"}
         </Link>
       </p>
+
     </div>
   );
 }
