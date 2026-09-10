@@ -1,5 +1,7 @@
 const bookingModel = require("../models/booking.model");
 const carModel = require("../models/car.model");
+const { sendBookingEmail } = require("../services/email.service");
+const { generateInvoice } = require("../services/invoice.service");
 
 const createBooking = async (req, res) => {
   try {
@@ -24,6 +26,7 @@ const createBooking = async (req, res) => {
       paymentMethod,
     } = req.body;
 
+    // Find car
     const car = await carModel.findById(carId);
 
     if (!car) {
@@ -32,12 +35,14 @@ const createBooking = async (req, res) => {
       });
     }
 
+    // Check availability
     if (!car.available) {
       return res.status(400).json({
         msg: "Car is currently unavailable",
       });
     }
 
+    // Create booking
     const booking = await bookingModel.create({
       renter: req.user._id,
       car: car._id,
@@ -67,6 +72,26 @@ const createBooking = async (req, res) => {
       status: "Pending",
     });
 
+    // Generate invoice + send email
+    try {
+      const invoiceBuffer = await generateInvoice(booking, car);
+
+      await sendBookingEmail({
+        booking,
+        car,
+
+        subject: "Velocity - Booking Request Received",
+
+        message:
+          "Your booking request has been received successfully. The car owner will review your request and you will receive another email once your booking is confirmed.",
+
+        invoiceBuffer,
+      });
+    } catch (emailError) {
+      console.error("Booking email failed:", emailError);
+    }
+
+    // Send response
     return res.status(201).json({
       msg: "Booking request sent successfully",
       booking,
@@ -79,7 +104,6 @@ const createBooking = async (req, res) => {
     });
   }
 };
-
 
 const getRenterBookings = async (req, res) => {
   try {
@@ -101,7 +125,6 @@ const getRenterBookings = async (req, res) => {
   }
 };
 
-
 const getOwnerBookings = async (req, res) => {
   try {
     const bookings = await bookingModel
@@ -121,7 +144,6 @@ const getOwnerBookings = async (req, res) => {
     });
   }
 };
-
 
 const updateBookingStatus = async (req, res) => {
   try {
@@ -156,6 +178,40 @@ const updateBookingStatus = async (req, res) => {
     booking.status = status;
 
     await booking.save();
+
+    // Send status email
+    try {
+      const car = await carModel.findById(booking.car);
+
+      if (car) {
+        const invoiceBuffer = await generateInvoice(booking, car);
+
+        let subject;
+        let message;
+
+        if (status === "Confirmed") {
+          subject = "Velocity - Booking Confirmed";
+
+          message =
+            "Great news! Your car rental booking has been confirmed by the car owner. Your invoice is attached to this email.";
+        } else {
+          subject = "Velocity - Booking Rejected";
+
+          message =
+            "Unfortunately, your car rental booking request has been rejected by the car owner.";
+        }
+
+        await sendBookingEmail({
+          booking,
+          car,
+          subject,
+          message,
+          invoiceBuffer,
+        });
+      }
+    } catch (emailError) {
+      console.error("Status email failed:", emailError);
+    }
 
     return res.status(200).json({
       msg: `Booking ${status.toLowerCase()} successfully`,

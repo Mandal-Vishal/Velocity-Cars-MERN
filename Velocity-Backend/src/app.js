@@ -6,6 +6,7 @@ const authRoute = require('./routes/auth.route')
 const carRoute = require('./routes/car.route')
 const wishListRoute = require('./routes/wishlist.route')
 const bookingRoute = require('./routes/booking.route')
+const contactRoute = require('./routes/contact.route')
 
 const app = express()
 
@@ -31,5 +32,6 @@ app.use('/api/auth' , authRoute)
 app.use('/api/cars' , carRoute)
 app.use('/api/wishlist' , wishListRoute)
 app.use('/api/bookings' , bookingRoute)
+app.use('/api/contact' , contactRoute)
 
 module.exports = app
