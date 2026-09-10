@@ -134,35 +134,7 @@ function Navbar() {
                   </Link>
                 ))}
                 <div className="my-3 h-px bg-border" />
-                {user ? (
-                  <div className="flex flex-col">
-                    <Link
-                      to="/bookings"
-                      onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-base font-medium hover:bg-muted"
-                    >
-                      My Bookings
-                    </Link>
-                    <Link
-                      to="/wishlist"
-                      onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-base font-medium hover:bg-muted"
-                    >
-                      Wishlist
-                    </Link>
-                    <Link
-                      to="/profile"
-                      onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-base font-medium hover:bg-muted"
-                    >
-                      Profile
-                    </Link>
-                  </div>
-                  ) : (
-                  ""
-                )}
-
-                {!user ? (
+                  {!user ? (
                   <div className="flex flex-col gap-3 p-2">
                     <Button asChild variant="outline" className="w-full">
                       <Link to="/login" onClick={() => setOpen(false)}>
@@ -188,9 +160,9 @@ function Navbar() {
                       </Link>
                     </Button>
                   </div>
-                ) : (
+                  ) : (
                   ""
-                )}
+                  )}
               </div>
             </SheetContent>
           </Sheet>
