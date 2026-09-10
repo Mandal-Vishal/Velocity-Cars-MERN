@@ -1,15 +1,54 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/src/context/AuthContext";
-import { Search, CalendarCheck, Heart, User } from "lucide-react";
+import {
+  Search,
+  CalendarCheck,
+  Heart,
+  User,
+  Loader2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Home() {
   const { user } = useContext(AuthContext);
+
+  const [cars, setCars] = useState([]);
+  const [carsLoading, setCarsLoading] = useState(true);
+  const [carsError, setCarsError] = useState("");
+
+  // Fetch real cars from backend
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        setCarsLoading(true);
+        setCarsError("");
+
+        const response = await axios.get(
+          "https://velocity-server-vert.vercel.app/api/cars",
+          {
+            withCredentials: true,
+          }
+        );
+
+        setCars(response.data.cars || response.data);
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+
+        setCarsError("Unable to load cars right now.");
+      } finally {
+        setCarsLoading(false);
+      }
+    };
+
+    fetchCars();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
+        {/* Welcome Section */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Welcome back, {user?.firstName}!
@@ -91,6 +130,7 @@ function Home() {
 
         {/* Recommended Cars */}
         <div className="mt-12">
+
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">
               Recommended Cars
@@ -104,63 +144,124 @@ function Home() {
             </Link>
           </div>
 
-          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Loading */}
+          {carsLoading && (
+            <div className="mt-8 flex items-center justify-center py-10">
+              <Loader2 className="h-6 w-6 animate-spin" />
 
-            <div className="rounded-xl border p-5">
-              <div className="flex h-40 items-center justify-center rounded-lg bg-muted">
-                Car Image
-              </div>
+              <span className="ml-2 text-sm text-muted-foreground">
+                Loading cars...
+              </span>
+            </div>
+          )}
 
-              <h3 className="mt-4 text-lg font-semibold">
-                BMW 3 Series
-              </h3>
-
+          {/* Error */}
+          {!carsLoading && carsError && (
+            <div className="mt-5 rounded-xl border p-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Automatic • Petrol
-              </p>
-
-              <p className="mt-3 font-semibold">
-                ₹4,500/day
+                {carsError}
               </p>
             </div>
+          )}
 
-            <div className="rounded-xl border p-5">
-              <div className="flex h-40 items-center justify-center rounded-lg bg-muted">
-                Car Image
+          {/* No Cars */}
+          {!carsLoading &&
+            !carsError &&
+            cars.length === 0 && (
+              <div className="mt-5 rounded-xl border p-6 text-center">
+                <p className="text-sm text-muted-foreground">
+                  No cars are available at the moment.
+                </p>
               </div>
+            )}
 
-              <h3 className="mt-4 text-lg font-semibold">
-                Hyundai Creta
-              </h3>
+          {/* Real Cars */}
+          {!carsLoading &&
+            !carsError &&
+            cars.length > 0 && (
+              <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-              <p className="text-sm text-muted-foreground">
-                Automatic • Petrol
-              </p>
+                {cars.slice(0, 3).map((car) => (
+                  <Link
+                    key={car._id}
+                    to={`/cars/${car._id}`}
+                    className="group overflow-hidden rounded-xl border bg-card transition hover:-translate-y-1 hover:shadow-md"
+                  >
 
-              <p className="mt-3 font-semibold">
-                ₹2,500/day
-              </p>
-            </div>
+                    {/* Car Image */}
+                    <div className="h-48 w-full overflow-hidden bg-muted">
+                      {car.image ? (
+                        <img
+                          src={car.image}
+                          alt={`${car.brand} ${car.model}`}
+                          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                          No Image
+                        </div>
+                      )}
+                    </div>
 
-            <div className="rounded-xl border p-5">
-              <div className="flex h-40 items-center justify-center rounded-lg bg-muted">
-                Car Image
+                    {/* Car Details */}
+                    <div className="p-5">
+
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h3 className="text-lg font-semibold">
+                            {car.brand} {car.model}
+                          </h3>
+
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {car.year}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                            car.available
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {car.available ? "Available" : "Unavailable"}
+                        </span>
+                      </div>
+
+                      {/* Specifications */}
+                      <div className="mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground">
+                        <span>{car.transmission}</span>
+
+                        <span>•</span>
+
+                        <span>{car.fuel}</span>
+
+                        {car.location && (
+                          <>
+                            <span>•</span>
+                            <span>{car.location}</span>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Price */}
+                      <div className="mt-4">
+                        <span className="text-lg font-bold">
+                          ₹{car.pricePerDay}
+                        </span>
+
+                        <span className="text-sm text-muted-foreground">
+                          /day
+                        </span>
+                      </div>
+
+                    </div>
+                  </Link>
+                ))}
+
               </div>
+            )}
 
-              <h3 className="mt-4 text-lg font-semibold">
-                Tata Nexon
-              </h3>
-
-              <p className="text-sm text-muted-foreground">
-                Manual • Petrol
-              </p>
-
-              <p className="mt-3 font-semibold">
-                ₹2,000/day
-              </p>
-            </div>
-
-          </div>
         </div>
 
         {/* Profile Shortcut */}
