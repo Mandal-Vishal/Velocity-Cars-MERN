@@ -99,7 +99,7 @@ function ContactPage() {
 
           <p className="flex items-center gap-3">
             <Mail className="size-5 text-primary" />
-            hello@velocity.rent
+            vishalmandal978@gmail.com
           </p>
 
           <p className="flex items-center gap-3">
@@ -109,7 +109,7 @@ function ContactPage() {
 
           <p className="flex items-center gap-3">
             <MapPin className="size-5 text-primary" />
-            100 Market Street, New York
+            Level 7, The Capital, G Block, BKC, Bandra East, Mumbai 400051
           </p>
 
         </div>
