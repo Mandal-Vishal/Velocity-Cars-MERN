@@ -72,6 +72,8 @@ const getCurrentUser = async (req, res) => {
 const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
+    secure:true,
+    sameSite : "none",
     path: "/",
   });
 

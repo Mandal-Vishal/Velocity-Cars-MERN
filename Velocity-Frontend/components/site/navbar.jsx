@@ -25,25 +25,25 @@ import DropDownMenu from "../ui/dropdown-menu";
 function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser , logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const logOut = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/logout`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-      setUser(null);
-      navigate("/login");
-      console.log("User logged out", response);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const logOut = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_API_URL}/api/auth/logout`,
+  //       {},
+  //       {
+  //         withCredentials: true,
+  //       },
+  //     );
+  //     setUser(null);
+  //     navigate("/login");
+  //     console.log("User logged out", response);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-lg">
@@ -91,7 +91,7 @@ function Navbar() {
           </div>
         </div>
         <div className="ml-auto flex items-center gap-1 lg:ml-2">
-          {user ? <DropDownMenu logOut={logOut} /> : ""}
+          {user ? <DropDownMenu logOut={logout} /> : ""}
           {!user ? (
             <div className="hidden items-center gap-2 lg:flex">
               <Button asChild variant="ghost" className="font-medium">
