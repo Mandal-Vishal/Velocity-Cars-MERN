@@ -102,7 +102,7 @@ function CarsBrowser() {
           <Slider
             value={[maxPrice]}
             min={500}
-            max={10000}
+            max={15000}
             step={100}
             onValueChange={(value) => setMaxPrice(value)}
           />
