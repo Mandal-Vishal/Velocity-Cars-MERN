@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.post('/' , authMiddleware , ownerMiddleware , upload.single('image'), carController.addCar)
 router.get('/' , carController.getCars)
+router.get('/myCars' ,authMiddleware , ownerMiddleware , carController.getMyCars)
 router.delete("/:id", authMiddleware,ownerMiddleware,carController.deleteCar);
 router.get("/:id", carController.getCarById);
 

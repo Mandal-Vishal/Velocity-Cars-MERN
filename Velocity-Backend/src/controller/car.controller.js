@@ -119,9 +119,22 @@ const deleteCar = async (req, res) => {
   }
 };
 
+const getMyCars = async (req, res) => {
+  try {
+    const cars = await carModel.find({ owner: req.user._id });
+
+    return res.status(200).json({ cars });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({ msg: "Failed to fetch cars!!" });
+  }
+};
+
 module.exports = {
   addCar,
   getCars,
   getCarById,
   deleteCar,
+  getMyCars
 };
