@@ -39,7 +39,7 @@ function DashboardContent({ user, onAddCar }) {
       setLoadingCars(true);
 
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/cars`,
+        `${import.meta.env.VITE_API_URL}/api/cars/myCars`,
         {
           withCredentials: true,
         }
